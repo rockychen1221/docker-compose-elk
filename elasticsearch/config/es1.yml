@@ -1,6 +1,6 @@
 cluster.name: es-docker-cluster
 node.name: es1
-node.master: false
+node.master: true
 node.data: true
 
 network.host: es1

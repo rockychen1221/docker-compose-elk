@@ -16,7 +16,7 @@ services:
       - "9200:9200"
       - "9300:9300"
     volumes:
-      - ./config/es.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - ./elasticsearch/config/es.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
       - ./data/es:/usr/share/elasticsearch/data
       - ./logs/es:/usr/share/elasticsearch/logs
     networks:
@@ -37,7 +37,7 @@ services:
       - "9201:9200"
       - "9301:9300"
     volumes:
-      - ./config/es1.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - ./elasticsearch/config/es1.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
       - ./data/es1:/usr/share/elasticsearch/data
       - ./logs/es1:/usr/share/elasticsearch/logs
     networks:
@@ -58,7 +58,7 @@ services:
       - "9202:9200"
       - "9302:9300"
     volumes:
-      - ./config/es2.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - ./elasticsearch/config/es2.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
       - ./data/es2:/usr/share/elasticsearch/data
       - ./logs/es2:/usr/share/elasticsearch/logs
     networks:
@@ -70,5 +70,30 @@ services:
       - 9100:9100
     networks:
       - net-es
+  kibana:
+    container_name: kibana
+    build:
+      context: kibana/
+    ports:
+      - "5601:5601"
+    networks:
+      - net-es
+    depends_on:
+      - es
+
+  # logstash:
+  #   container_name: logstash
+  #   build:
+  #     context: logstash/
+  #   ports:
+  #     - "5000:5000"
+  #     - "9600:9600"
+  #   environment:
+  #     LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+  #   networks:
+  #     - net-es
+  #   depends_on:
+  #     - es
+
 networks:
   net-es:
